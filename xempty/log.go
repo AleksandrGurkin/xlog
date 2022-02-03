@@ -1,4 +1,4 @@
-package empty
+package xempty
 
 import (
 	"github.com/AleksandrGurkin/xlog"
