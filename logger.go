@@ -1,9 +1,11 @@
 package xlog
 
 import (
+	"context"
 	"io"
 
 	"github.com/AleksandrGurkin/xerror"
+	"github.com/AleksandrGurkin/xlog/empty"
 )
 
 var ErrorInitLogger = xerror.CommonError{
@@ -38,4 +40,17 @@ type LoggerCfg struct {
 	Level      string
 	TimeFormat string
 	Out        io.Writer
+}
+
+var ContextValue = "xlogger"
+
+func SaveLoggerToCtx(ctx context.Context, logger Logger) context.Context {
+	return context.WithValue(ctx, ContextValue, logger)
+}
+
+func XLogFromCtx(ctx context.Context) Logger {
+	if log, ok := ctx.Value(ContextValue).(Logger); ok {
+		return log
+	}
+	return empty.Empty{}
 }
