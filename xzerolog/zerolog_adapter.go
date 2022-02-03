@@ -74,7 +74,11 @@ func (z *zLog) Fatal(msg string) {
 }
 
 func (z *zLog) WithXFields(fields xlog.Fields) xlog.Logger {
-	return &zLog{z.l.With().Fields(fields).Logger()}
+	var fi = make(map[string]interface{})
+	for k, v := range fields {
+		fi[k] = v
+	}
+	return &zLog{z.l.With().Fields(fi).Logger()}
 }
 
 func (z *zLog) WithXField(key string, value interface{}) xlog.Logger {
